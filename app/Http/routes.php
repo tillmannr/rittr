@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'TweetController@index');
+Route::get('/tweets', 'TweetController@tweets');

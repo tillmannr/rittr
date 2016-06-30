@@ -34,4 +34,9 @@ class Auth
 
 		return $this->redis->hGet("user:$userId", 'auth');
 	}
+
+	public function getUserId($userName)
+	{
+		return $this->redis->hGet('users', $userName);
+	}
 }
