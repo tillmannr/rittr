@@ -27,27 +27,28 @@ class TweetManager
 
 	public function saveTweet($userId, $body)
 	{
-		$postId = $this->getNextPostId();
+		$tweetId = $this->getNextPostId();
 		$tweet  = [
 			'userId' => $userId,
 			'body'   => $body,
 			'time'   => time(),
 		];
 
-		$this->redis->hmset("post:$postId", $tweet);
+		$this->redis->hmset("tweet:$tweetId", $tweet);
+		$this->redis->lpush('tweets', $tweetId);
 	}
 
-	private function setDummyTweets()
+	public function getTweet($id)
 	{
-		$this->redis->lpush('tweets', 'first tweet');
-		$this->redis->lpush('tweets', 'second tweet');
-		$this->redis->lpush('tweets', 'third tweet');
+		return $this->redis->hmget("tweet:$id", ['userId', 'body', 'time']);
 	}
 
 	public function getAll()
 	{
-//		$this->setDummyTweets();
-//		return $this->redis->hmget('tweets', 0, -1);
-//		return $this->redis->lrange('tweets', 0, -1);
+		$tweets = $this->redis->lrange('tweets', 0, -1);
+		foreach ($tweets as $tweetId)
+		{
+			var_dump($this->getTweet($tweetId));
+		}
 	}
 }
