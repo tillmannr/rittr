@@ -29,9 +29,11 @@ class TweetController extends Controller
 	public function doAuth(Request $request)
 	{
 		$authLogic = \App\Logic\Auth::create();
-		if (!$authLogic->auth($request->input('userName'), $request->input('password'))) {
+		$authKey = $authLogic->auth($request->input('userName'), $request->input('password'));
+		if (!$authKey) {
 			return redirect('/auth');
 		}
+		$request->session()->put('authUser', $authKey);
 		return redirect('/tweets');
 	}
 
@@ -50,13 +52,16 @@ class TweetController extends Controller
 		return redirect('/auth');
 	}
 
-	public function tweets()
+	public function tweets(Request $request)
 	{
 		$authLogic = \App\Logic\Auth::create();
-		$userId = $authLogic->getUserId('tillmannr');
-
+		print $request->session()->get('authUser');
 		$tweetManager = \App\Logic\TweetManager::create();
-		$tweetManager->saveTweet($userId, md5(time()));
-		dd($tweetManager->getAll());
+		return view('timeline', [
+			'tweets' => $tweetManager->getAll(),
+		]);
+
+//		$tweetManager->saveTweet($userId, md5(time()));
+//		dd($tweetManager->getAll());
 	}
 }

@@ -22,22 +22,22 @@ class Auth
 
 	public function auth($userName, $password)
 	{
-		$userId = $this->redis->hGet('users', $userName);
+		$userId = $this->redis->hget('users', $userName);
 
 		if (!$userId) {
 			return false;
 		}
 
-		if (md5($password) != $this->redis->hGet("user:$userId", 'password')) {
+		if (md5($password) != $this->redis->hget("user:$userId", 'password')) {
 			return false;
 		}
 
-		return $this->redis->hGet("user:$userId", 'auth');
+		return $this->redis->hget("user:$userId", 'auth');
 	}
 
 	public function getUserId($userName)
 	{
-		return $this->redis->hGet('users', $userName);
+		return $this->redis->hget('users', $userName);
 	}
 
 	public function register($userName, $password)

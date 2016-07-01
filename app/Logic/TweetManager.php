@@ -40,15 +40,20 @@ class TweetManager
 
 	public function getTweet($id)
 	{
-		return $this->redis->hmget("tweet:$id", ['userId', 'body', 'time']);
+		$tweet             = $this->redis->hgetall("tweet:$id"); //, ['userId', 'body', 'time']);
+		$tweet['username'] = $this->redis->hget('user:' . $tweet['userId'], 'username');
+
+		return $tweet;
 	}
 
 	public function getAll()
 	{
 		$tweets = $this->redis->lrange('tweets', 0, -1);
+		$ret    = [];
 		foreach ($tweets as $tweetId)
 		{
-			var_dump($this->getTweet($tweetId));
+			$ret[] = $this->getTweet($tweetId);
 		}
+		return $ret;
 	}
 }
