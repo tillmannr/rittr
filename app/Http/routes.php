@@ -12,4 +12,10 @@
 */
 
 Route::get('/', 'TweetController@index');
+Route::get('/auth', 'TweetController@auth');
+Route::post('/doauth', 'TweetController@doAuth');
+
+Route::get('/register', 'TweetController@register');
+Route::post('/doregistration', 'TweetController@doRegistration');
+
 Route::get('/tweets', 'TweetController@tweets');

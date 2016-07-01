@@ -28,7 +28,7 @@ class Auth
 			return false;
 		}
 
-		if ($password != $this->redis->hGet("user:$userId", 'password')) {
+		if (md5($password) != $this->redis->hGet("user:$userId", 'password')) {
 			return false;
 		}
 
@@ -38,5 +38,28 @@ class Auth
 	public function getUserId($userName)
 	{
 		return $this->redis->hGet('users', $userName);
+	}
+
+	public function register($userName, $password)
+	{
+		if (!empty($this->getUserId($userName))) {
+			return false;
+		}
+
+		$userId     = $this->redis->incr('nextUserId');
+		$authSecret = md5(time());
+
+		$this->redis->hset('users', $userName, $userId);
+		$this->redis->hmset(
+			"user:$userId",
+			[
+				'username' => $userName,
+				'password' => md5($password),
+				'auth'     => $authSecret,
+			]
+		);
+		$this->redis->hset('auths', $authSecret, $userId);
+
+		return $authSecret;
 	}
 }

@@ -21,6 +21,35 @@ class TweetController extends Controller
 //		return view('tweets.index');
 	}
 
+	public function auth()
+	{
+		return view('auth');
+	}
+
+	public function doAuth(Request $request)
+	{
+		$authLogic = \App\Logic\Auth::create();
+		if (!$authLogic->auth($request->input('userName'), $request->input('password'))) {
+			return redirect('/auth');
+		}
+		return redirect('/tweets');
+	}
+
+	public function register(Request $request)
+	{
+		$authLogic = \App\Logic\Auth::create();
+		return view('register');
+	}
+
+	public function doRegistration(Request $request)
+	{
+		$authLogic = \App\Logic\Auth::create();
+		if ($authLogic->register($request->input('userName'), $request->input('password')) === false) {
+			return redirect('/register');
+		}
+		return redirect('/auth');
+	}
+
 	public function tweets()
 	{
 		$authLogic = \App\Logic\Auth::create();
