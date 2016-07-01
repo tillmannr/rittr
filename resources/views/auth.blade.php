@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Login</h1>
-    <form action="{{ url('doauth') }}" method="POST">
+    <form action="{{ action('TweetController@doAuth') }}" method="POST">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="userName">Username</label>

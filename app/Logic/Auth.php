@@ -46,8 +46,8 @@ class Auth
 			return false;
 		}
 
-		$userId     = $this->redis->incr('nextUserId');
-		$authSecret = md5(time());
+		$userId  = $this->redis->incr('nextUserId');
+		$authKey = md5(time());
 
 		$this->redis->hset('users', $userName, $userId);
 		$this->redis->hmset(
@@ -55,11 +55,24 @@ class Auth
 			[
 				'username' => $userName,
 				'password' => md5($password),
-				'auth'     => $authSecret,
+				'auth'     => $authKey,
 			]
 		);
-		$this->redis->hset('auths', $authSecret, $userId);
+		$this->redis->hset('auths', $authKey, $userId);
 
-		return $authSecret;
+		return $authKey;
+	}
+
+	public function getUserIdByAuthKey($authKey)
+	{
+		return $this->redis->hget('auths', $authKey);
+	}
+
+	public function getUserById($userId)
+	{
+		$user           = $this->redis->hgetall("user:$userId");
+		$user['userId'] = $userId;
+
+		return $user;
 	}
 }

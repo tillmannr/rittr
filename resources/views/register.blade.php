@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Register</h1>
-    <form action="{{ url('doregistration') }}" method="POST">
+    <form action="{{ action('TweetController@createRegistration') }}" method="POST">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="userName">Username</label>

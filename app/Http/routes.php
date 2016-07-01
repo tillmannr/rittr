@@ -15,7 +15,9 @@ Route::get('/', 'TweetController@index');
 Route::get('/auth', 'TweetController@auth');
 Route::post('/doauth', 'TweetController@doAuth');
 
-Route::get('/register', 'TweetController@register');
-Route::post('/doregistration', 'TweetController@doRegistration');
+Route::get('/registration', 'TweetController@register');
+Route::post('/registration/create', 'TweetController@createRegistration');
 
-Route::get('/tweets', 'TweetController@tweets');
+Route::post('/tweet/create', 'TweetController@createTweet');
+
+Route::get('/timeline', 'TweetController@timeline');

@@ -31,10 +31,10 @@ class TweetController extends Controller
 		$authLogic = \App\Logic\Auth::create();
 		$authKey = $authLogic->auth($request->input('userName'), $request->input('password'));
 		if (!$authKey) {
-			return redirect('/auth');
+			return redirect(action('TweetController@auth'));
 		}
 		$request->session()->put('authUser', $authKey);
-		return redirect('/tweets');
+		return redirect(action('TweetController@timeline'));
 	}
 
 	public function register(Request $request)
@@ -43,19 +43,20 @@ class TweetController extends Controller
 		return view('register');
 	}
 
-	public function doRegistration(Request $request)
+	public function createRegistration(Request $request)
 	{
 		$authLogic = \App\Logic\Auth::create();
 		if ($authLogic->register($request->input('userName'), $request->input('password')) === false) {
-			return redirect('/register');
+			return redirect(action('TweetController@register'));
 		}
-		return redirect('/auth');
+		return redirect(action('TweetController@auth'));
 	}
 
-	public function tweets(Request $request)
+	public function timeline(Request $request)
 	{
 		$authLogic = \App\Logic\Auth::create();
-		print $request->session()->get('authUser');
+//		print $request->session()->get('authUser');
+//		var_dump($authLogic->getUserIdByAuthKey($request->session()->get('authUser')));
 		$tweetManager = \App\Logic\TweetManager::create();
 		return view('timeline', [
 			'tweets' => $tweetManager->getAll(),
@@ -63,5 +64,14 @@ class TweetController extends Controller
 
 //		$tweetManager->saveTweet($userId, md5(time()));
 //		dd($tweetManager->getAll());
+	}
+
+	public function createTweet(Request $request)
+	{
+		$authLogic    = \App\Logic\Auth::create();
+		$tweetManager = \App\Logic\TweetManager::create();
+		$userId = $authLogic->getUserIdByAuthKey($request->session()->get('authUser'));
+		$tweetManager->saveTweet($userId, $request->input('tweet'));
+		return redirect(action('TweetController@timeline'));
 	}
 }
