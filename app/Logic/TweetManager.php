@@ -25,7 +25,7 @@ class TweetManager
 		return $this->redis->incr('nextPostId');
 	}
 
-	public function saveTweet($userId, $body)
+	public function saveTweet(int $userId, string $body)
 	{
 		$tweetId = $this->getNextPostId();
 		$tweet  = [
@@ -38,7 +38,7 @@ class TweetManager
 		$this->redis->lpush('tweets', $tweetId);
 	}
 
-	public function getTweet($id)
+	public function getTweet(int $id)
 	{
 		$tweet             = $this->redis->hgetall("tweet:$id"); //, ['userId', 'body', 'time']);
 		$tweet['username'] = $this->redis->hget('user:' . $tweet['userId'], 'username');

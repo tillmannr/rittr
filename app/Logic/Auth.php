@@ -20,7 +20,7 @@ class Auth
 		);
 	}
 
-	public function auth($userName, $password)
+	public function auth(string $userName, string $password)
 	{
 		$userId = $this->redis->hget('users', $userName);
 
@@ -35,12 +35,12 @@ class Auth
 		return $this->redis->hget("user:$userId", 'auth');
 	}
 
-	public function getUserId($userName)
+	public function getUserId(string $userName)
 	{
 		return $this->redis->hget('users', $userName);
 	}
 
-	public function register($userName, $password)
+	public function register(string $userName, string $password)
 	{
 		if (!empty($this->getUserId($userName))) {
 			return false;
@@ -63,16 +63,9 @@ class Auth
 		return $authKey;
 	}
 
-	public function getUserIdByAuthKey($authKey)
+	public function getUserIdByAuthKey(string $authKey)
 	{
 		return $this->redis->hget('auths', $authKey);
 	}
 
-	public function getUserById($userId)
-	{
-		$user           = $this->redis->hgetall("user:$userId");
-		$user['userId'] = $userId;
-
-		return $user;
-	}
 }
