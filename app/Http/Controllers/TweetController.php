@@ -11,7 +11,7 @@ class TweetController extends Controller
 
 	public function __construct()
 	{
-
+		$this->middleware('user', ['only' => 'timeline']);
 	}
 
 	public function index(Request $request)
