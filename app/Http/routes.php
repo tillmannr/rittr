@@ -11,13 +11,12 @@
 |
 */
 
-Route::get('/', 'TweetController@index');
+Route::get('/', 'TweetController@timeline');
 Route::get('/auth', 'TweetController@auth');
+Route::get('/logout', 'TweetController@logout');
 Route::post('/doauth', 'TweetController@doAuth');
 
 Route::get('/registration', 'TweetController@register');
 Route::post('/registration/create', 'TweetController@createRegistration');
 
 Route::post('/tweet/create', 'TweetController@createTweet');
-
-Route::get('/timeline', 'TweetController@timeline');

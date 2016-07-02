@@ -28,7 +28,7 @@ class Auth
 			return false;
 		}
 
-		if (password_hash($password, PASSWORD_BCRYPT) != $this->redis->hget("user:$userId", 'password')) {
+		if (!password_verify($password, $this->redis->hget("user:$userId", 'password'))) {
 			return false;
 		}
 

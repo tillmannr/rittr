@@ -12,6 +12,6 @@
             <label for="password">Password</label>
             <input name="password" type="password" class="form-control" id="password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Submit</button> or <a href="{{ action('TweetController@auth') }}">Log in</a>
     </form>
 @stop
