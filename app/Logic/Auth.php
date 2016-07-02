@@ -28,7 +28,7 @@ class Auth
 			return false;
 		}
 
-		if (md5($password) != $this->redis->hget("user:$userId", 'password')) {
+		if (password_hash($password, PASSWORD_BCRYPT) != $this->redis->hget("user:$userId", 'password')) {
 			return false;
 		}
 
@@ -54,7 +54,7 @@ class Auth
 			"user:$userId",
 			[
 				'username' => $userName,
-				'password' => md5($password),
+				'password' => password_hash($password, PASSWORD_BCRYPT),
 				'auth'     => $authKey,
 			]
 		);
