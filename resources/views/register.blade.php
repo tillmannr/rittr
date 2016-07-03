@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Register</h1>
-    <form action="{{ action('TweetController@createRegistration') }}" method="POST">
+    <form action="{{ action('AuthController@register') }}" method="POST">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="userName">Username</label>
@@ -12,6 +12,6 @@
             <label for="password">Password</label>
             <input name="password" type="password" class="form-control" id="password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button> or <a href="{{ action('TweetController@auth') }}">Log in</a>
+        <button type="submit" class="btn btn-default">Submit</button> or <a href="{{ action('AuthController@showLoginForm') }}">Log in</a>
     </form>
 @stop

@@ -19,7 +19,7 @@ class RedirectIfNotLoggedIn
 		if (empty($request->session()->get('authUser')) ||
 			!$authLogic->getUserIdByAuthKey($request->session()->get('authUser')))
 		{
-			return redirect(action('TweetController@auth'));
+			return redirect(action('AuthController@showLoginForm'));
 		}
 
         return $next($request);
